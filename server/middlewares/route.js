@@ -1,20 +1,20 @@
 function noop() {}
 
 /**
- * 路由处理
- * @param {IO} io koa socket io实例
- * @param {Object} routes 路由
+ * Routing processing
+ * @param {IO} io koa socket io Instance
+ * @param {Object} routes routing
  */
 module.exports = function (io, _io, routes) {
     Object.keys(routes).forEach((route) => {
-        io.on(route, noop); // 注册事件
+        io.on(route, noop); // Registration issue
     });
 
     return async (ctx) => {
-        // 判断路由是否存在
+        // Determine if the route exists
         if (routes[ctx.event]) {
             const { event, data, socket } = ctx;
-            // 执行路由并获取返回数据
+            // Execute routing and get return data
             ctx.res = await routes[ctx.event]({
                 event, // 事件名
                 data, // 请求数据

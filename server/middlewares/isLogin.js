@@ -12,7 +12,7 @@ module.exports = function () {
     };
     return async (ctx, next) => {
         if (!noUseLoginEvent[ctx.event] && !ctx.socket.user) {
-            ctx.res = '请登录后再试';
+            ctx.res = 'Please log in and try again';
             return;
         }
         await next();

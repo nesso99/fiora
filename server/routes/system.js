@@ -47,7 +47,7 @@ module.exports = {
         }
 
         const res = await axios.get(`https://www.doutula.com/search?keyword=${encodeURIComponent(keywords)}`);
-        assert(res.status === 200, '搜索表情包失败, 请重试');
+        assert(res.status === 200, 'Search emoticon failed, please try again');
 
         const images = res.data.match(/data-original="[^ "]+"/g) || [];
         return images.map(i => i.substring(15, i.length - 1));
@@ -58,7 +58,7 @@ module.exports = {
         }
 
         const res = await axios.get('https://openapi.baidu.com/oauth/2.0/token?grant_type=client_credentials&client_id=pw152BzvaSZVwrUf3Z2OHXM6&client_secret=fa273cc704b080e85ad61719abbf7794');
-        assert(res.status === 200, '请求百度token失败');
+        assert(res.status === 200, 'Requesting Baidu token failed');
 
         baiduToken = res.data.access_token;
         lastBaiduTokenTime = Date.now() + (res.data.expires_in - 60 * 60 * 24) * 1000;
@@ -66,14 +66,14 @@ module.exports = {
     },
     async sealUser(ctx) {
         const { username } = ctx.data;
-        assert(username !== '', 'username不能为空');
+        assert(username !== '', 'Username cannot be empty');
 
         const user = await User.findOne({ username });
-        assert(user, '用户不存在');
+        assert(user, 'User does not exist');
 
         const userId = user._id.toString();
         const sealList = global.mdb.get('sealList');
-        assert(!sealList.has(userId), '用户已在封禁名单');
+        assert(!sealList.has(userId), 'User is on the ban list');
 
         sealList.add(userId);
         setTimeout(() => {
@@ -99,7 +99,7 @@ module.exports = {
             };
         } catch (err) {
             console.error(err);
-            return `上传文件失败:${err.message}`;
+            return `Upload file failed:${err.message}`;
         }
     },
 };

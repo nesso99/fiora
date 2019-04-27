@@ -66,13 +66,13 @@ class UserInfo extends Component {
         if (!err) {
             onClose();
             action.removeLinkman(getFriendId(userId, userInfo._id));
-            Message.success('删除好友成功');
+            Message.success('Delete friend successfully');
         }
     }
     handleSeal = async () => {
         const [err] = await fetch('sealUser', { username: this.props.userInfo.username });
         if (!err) {
-            Message.success('封禁用户成功');
+            Message.success('Blocking user success');
         }
     }
     mouseEnterAvatar = () => {
@@ -110,21 +110,21 @@ class UserInfo extends Component {
                                 {
                                     userInfo._id === '5adad39555703565e7903f79' && userInfo.username !== 'robot10' ?
                                         <div className="info">
-                                            <p>这是一个外星人</p>
+                                            <p>This is an alien</p>
                                         </div>
                                         :
                                         <div className="info">
                                             {
-                                                isFriend ? <Button onClick={this.handleFocusUser}>发送消息</Button> : null
+                                                isFriend ? <Button onClick={this.handleFocusUser}>Send a message</Button> : null
                                             }
                                             {
                                                 isFriend ?
-                                                    <Button type="danger" onClick={this.handleDeleteFriend}>删除好友</Button>
+                                                    <Button type="danger" onClick={this.handleDeleteFriend}>delete friend</Button>
                                                     :
-                                                    <Button onClick={this.handleAddFriend}>加为好友</Button>
+                                                    <Button onClick={this.handleAddFriend}>Add to friends</Button>
                                             }
                                             {
-                                                isAdmin ? <Button type="danger" onClick={this.handleSeal}>封禁用户</Button> : null
+                                                isAdmin ? <Button type="danger" onClick={this.handleSeal}>Ban user</Button> : null
                                             }
                                         </div>
                                 }

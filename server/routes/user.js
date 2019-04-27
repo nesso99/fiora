@@ -52,14 +52,14 @@ module.exports = {
         const {
             username, password, os, browser, environment,
         } = ctx.data;
-        assert(username, '用户名不能为空');
-        assert(password, '密码不能为空');
+        assert(username, 'Username can not be empty');
+        assert(password, 'password can not be blank');
 
         const user = await User.findOne({ username });
-        assert(!user, '该用户名已存在');
+        assert(!user, 'The username already exists');
 
         const defaultGroup = await Group.findOne({ isDefault: true });
-        assert(defaultGroup, '默认群组不存在');
+        assert(defaultGroup, 'Default group does not exist');
 
         const salt = await bcrypt.genSalt$(saltRounds);
         const hash = await bcrypt.hash$(password, salt);
@@ -68,13 +68,12 @@ module.exports = {
         try {
             newUser = await User.create({
                 username,
-                salt,
                 password: hash,
                 avatar: getRandomAvatar(),
             });
         } catch (err) {
             if (err.name === 'ValidationError') {
-                return '用户名包含不支持的字符或者长度超过限制';
+                return 'Username contains unsupported characters or length exceeds limit';
             }
             throw err;
         }
@@ -90,7 +89,7 @@ module.exports = {
         const token = generateToken(newUser._id, environment);
 
         ctx.socket.user = newUser._id;
-        await Socket.update({ id: ctx.socket.id }, {
+        await Socket.updateOne({ id: ctx.socket.id }, {
             user: newUser._id,
             os,
             browser,
@@ -115,19 +114,19 @@ module.exports = {
         };
     },
     async login(ctx) {
-        assert(!ctx.socket.user, '你已经登录了');
+        assert(!ctx.socket.user, 'You are already logged in');
 
         const {
             username, password, os, browser, environment,
         } = ctx.data;
-        assert(username, '用户名不能为空');
-        assert(password, '密码不能为空');
+        assert(username, 'Username can not be empty');
+        assert(password, 'password can not be blank');
 
         const user = await User.findOne({ username });
-        assert(user, '该用户不存在');
+        assert(user, 'this user does not exist');
 
         const isPasswordCorrect = bcrypt.compareSync(password, user.password);
-        assert(isPasswordCorrect, '密码错误');
+        assert(isPasswordCorrect, 'wrong password');
 
         handleNewUser(user);
 
@@ -146,7 +145,7 @@ module.exports = {
         const token = generateToken(user._id, environment);
 
         ctx.socket.user = user._id;
-        await Socket.update({ id: ctx.socket.id }, {
+        await Socket.updateOne({ id: ctx.socket.id }, {
             user: user._id,
             os,
             browser,
@@ -164,25 +163,25 @@ module.exports = {
         };
     },
     async loginByToken(ctx) {
-        assert(!ctx.socket.user, '你已经登录了');
+        assert(!ctx.socket.user, 'You are already logged in');
 
         const {
             token, os, browser, environment,
         } = ctx.data;
-        assert(token, 'token不能为空');
+        assert(token, 'Token cannot be empty');
 
         let payload = null;
         try {
             payload = jwt.decode(token, config.jwtSecret);
         } catch (err) {
-            return '非法token';
+            return 'Illegal token';
         }
 
-        assert(Date.now() < payload.expires, 'token已过期');
-        assert.equal(environment, payload.environment, '非法登录');
+        assert(Date.now() < payload.expires, 'Token has expired');
+        assert.equal(environment, payload.environment, 'Illegal login');
 
         const user = await User.findOne({ _id: payload.user }, { _id: 1, avatar: 1, username: 1, createTime: 1 });
-        assert(user, '用户不存在');
+        assert(user, 'User does not exist');
 
         handleNewUser(user);
 
@@ -199,7 +198,7 @@ module.exports = {
             .populate('to', { avatar: 1, username: 1 });
 
         ctx.socket.user = user._id;
-        await Socket.update({ id: ctx.socket.id }, {
+        await Socket.updateOne({ id: ctx.socket.id }, {
             user: user._id,
             os,
             browser,
@@ -218,7 +217,7 @@ module.exports = {
     async guest(ctx) {
         const { os, browser, environment } = ctx.data;
 
-        await Socket.update({ id: ctx.socket.id }, {
+        await Socket.updateOne({ id: ctx.socket.id }, {
             os,
             browser,
             environment,
@@ -240,9 +239,9 @@ module.exports = {
     },
     async changeAvatar(ctx) {
         const { avatar } = ctx.data;
-        assert(avatar, '新头像链接不能为空');
+        assert(avatar, 'New avatar link cannot be empty');
 
-        await User.update({ _id: ctx.socket.user }, {
+        await User.updateOne({ _id: ctx.socket.user }, {
             avatar,
         });
 
@@ -250,13 +249,13 @@ module.exports = {
     },
     async addFriend(ctx) {
         const { userId } = ctx.data;
-        assert(isValid(userId), '无效的用户ID');
+        assert(isValid(userId), 'Invalid user ID');
 
         const user = await User.findOne({ _id: userId });
-        assert(user, '添加好友失败, 用户不存在');
+        assert(user, 'Add friend failed, user does not exist');
 
         const friend = await Friend.find({ from: ctx.socket.user, to: user._id });
-        assert(friend.length === 0, '你们已经是好友了');
+        assert(friend.length === 0, 'You are already friends.');
 
         const newFriend = await Friend.create({
             from: ctx.socket.user,
@@ -273,12 +272,12 @@ module.exports = {
     },
     async deleteFriend(ctx) {
         const { userId } = ctx.data;
-        assert(isValid(userId), '无效的用户ID');
+        assert(isValid(userId), 'Invalid user ID');
 
         const user = await User.findOne({ _id: userId });
-        assert(user, '用户不存在');
+        assert(user, 'User does not exist');
 
-        await Friend.remove({ from: ctx.socket.user, to: user._id });
+        await Friend.deleteOne({ from: ctx.socket.user, to: user._id });
         return {};
     },
     /**
@@ -286,12 +285,12 @@ module.exports = {
      */
     async changePassword(ctx) {
         const { oldPassword, newPassword } = ctx.data;
-        assert(newPassword, '新密码不能为空');
-        assert(oldPassword !== newPassword, '新密码不能与旧密码相同');
+        assert(newPassword, 'New password cannot be empty');
+        assert(oldPassword !== newPassword, 'The new password cannot be the same as the old password');
 
         const user = await User.findOne({ _id: ctx.socket.user });
         const isPasswordCorrect = bcrypt.compareSync(oldPassword, user.password);
-        assert(isPasswordCorrect, '旧密码不正确');
+        assert(isPasswordCorrect, 'Old password is incorrect');
 
         const salt = await bcrypt.genSalt$(saltRounds);
         const hash = await bcrypt.hash$(newPassword, salt);
@@ -308,10 +307,10 @@ module.exports = {
      */
     async changeUsername(ctx) {
         const { username } = ctx.data;
-        assert(username, '新用户名不能为空');
+        assert(username, 'New username cannot be empty');
 
         const user = await User.findOne({ username });
-        assert(!user, '该用户名已存在, 换一个试试吧');
+        assert(!user, 'The username already exists, try another one.');
 
         const self = await User.findOne({ _id: ctx.socket.user });
 
@@ -323,20 +322,19 @@ module.exports = {
         };
     },
     /**
-     * 重置用户密码
+     * Reset user password
      */
     async resetUserPassword(ctx) {
         const { username } = ctx.data;
-        assert(username !== '', 'username不能为空');
+        assert(username !== '', 'Username cannot be empty');
 
         const user = await User.findOne({ username });
-        assert(user, '用户不存在');
+        assert(user, 'User does not exist');
 
         const newPassword = 'helloworld';
         const salt = await bcrypt.genSalt$(saltRounds);
         const hash = await bcrypt.hash$(newPassword, salt);
 
-        user.salt = salt;
         user.password = hash;
         await user.save();
 

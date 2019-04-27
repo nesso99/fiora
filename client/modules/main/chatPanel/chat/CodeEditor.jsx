@@ -246,7 +246,7 @@ class CodeEditor extends Component {
         return (
             <div className="chat-codeEditor">
                 <div className="select-container">
-                    <h3>编程语言: </h3>
+                    <h3>Programming language:</h3>
                     <Select className="language-select" defaultValue={languages[0]} onSelect={this.handleSelectLanguage}>
                         {
                             languages.map(language => (

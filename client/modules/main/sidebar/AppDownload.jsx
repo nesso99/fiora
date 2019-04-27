@@ -13,12 +13,12 @@ export default class AppDownload extends Component {
     render() {
         const { visible, onClose } = this.props;
         return (
-            <Dialog className="dialog app-download" visible={visible} title="下载APP" onClose={onClose}>
+            <Dialog className="dialog app-download" visible={visible} title="Download app" onClose={onClose}>
                 <div className="content">
                     <div>
                         <p>Android</p>
                         <div className="android">
-                            <p>点击链接或者扫码下载APK</p>
+                            <p>Click on the link or scan code to download APK</p>
                             <a href="http://cdn.suisuijiang.com/fiora-v0.4.0.apk" download>http://cdn.suisuijiang.com/fiora-v0.4.0.apk</a>
                             <br />
                             <img src="https://qr.api.cli.im/qr?data=http%253A%252F%252Fcdn.suisuijiang.com%252Ffiora-v0.4.0.apk&level=H&transparent=false&bgcolor=%23ffffff&forecolor=%23000000&blockpixel=12&marginblock=1&logourl=&size=280&kid=cliim&key=1d772963649f10d1eff6b28642cc6eb3" />

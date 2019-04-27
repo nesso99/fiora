@@ -9,3 +9,6 @@ yarn-error.log
 runServer.sh
 build.sh
 .qiniurc
+
+package-lock.json
+.env

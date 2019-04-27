@@ -222,9 +222,9 @@ class Message extends Component {
                             <span>{size}</span>
                         </div>
                     </div>
-                    <p>查看</p>
+                    <p>View</p>
                 </div>
-                <Dialog className="code-viewer" title="查看代码" visible={this.state.showCode} onClose={this.hideCode}>
+                <Dialog className="code-viewer" title="View code" visible={this.state.showCode} onClose={this.hideCode}>
                     <pre className="pre line-numbers">
                         <code className={`language-${language}`} dangerouslySetInnerHTML={{ __html: html }} />
                     </pre>
@@ -243,9 +243,9 @@ class Message extends Component {
         return (
             <div className="invite" onClick={this.joinGroup}>
                 <div>
-                    <span>&quot;{inviteInfo.inviter}&quot; 邀请你加入群组「{inviteInfo.groupName}」</span>
+                    <span>&quot;{inviteInfo.inviter}&quot; Invite you to join the group「{inviteInfo.groupName}」</span>
                 </div>
-                <p>加入</p>
+                <p>Join</p>
             </div>
         );
     }
@@ -269,7 +269,7 @@ class Message extends Component {
         }
         default:
             return (
-                <div className="unknown">不支持的消息类型</div>
+                <div className="unknown">Unsupported message type</div>
             );
         }
     }

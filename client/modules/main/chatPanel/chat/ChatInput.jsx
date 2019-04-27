@@ -142,13 +142,13 @@ class ChatInput extends Component {
     }
     handleSendCode = () => {
         if (!this.props.connect) {
-            return Message.error('发送消息失败, 您当前处于离线状态');
+            return Message.error('Failed to send message, you are currently offline');
         }
 
         const language = this.codeEditor.getLanguage();
         const rawCode = this.codeEditor.getValue();
         if (rawCode === '') {
-            return Message.warning('请输入内容');
+            return Message.warning('Please enter the content');
         }
 
         const code = `@language=${language}@${rawCode}`;
@@ -220,7 +220,7 @@ class ChatInput extends Component {
     }
     sendTextMessage = () => {
         if (!this.props.connect) {
-            return Message.error('发送消息失败, 您当前处于离线状态');
+            return Message.error('Failed to send message, you are currently offline');
         }
 
         const message = this.message.value.trim();
@@ -306,14 +306,14 @@ class ChatInput extends Component {
                 this.sendMessage(id, 'image', `${imageUrl}?width=${img.width}&height=${img.height}`, focus);
             } catch (err) {
                 console.error(err);
-                Message.error('上传图片失败');
+                Message.error('Uploading image failed');
             }
         };
         img.src = url;
     }
     handleSelectFile = async () => {
         if (!this.props.connect) {
-            return Message.error('发送消息失败, 您当前处于离线状态');
+            return Message.error('Failed to send message, you are currently offline');
         }
         const image = await readDiskFile('blob', 'image/png,image/jpeg,image/gif');
         if (!image) {
@@ -329,7 +329,7 @@ class ChatInput extends Component {
     handlePaste = (e) => {
         if (!this.props.connect) {
             e.preventDefault();
-            return Message.error('发送消息失败, 您当前处于离线状态');
+            return Message.error('Failed to send message, you are currently offline');
         }
         const { items, types } = (e.clipboardData || e.originalEvent.clipboardData);
 
@@ -381,7 +381,7 @@ class ChatInput extends Component {
                         expressionSearchResults: result,
                     });
                 } else {
-                    Message.info('没有相关表情, 换个关键字试试吧');
+                    Message.info('No relevant expressions, try another keyword.');
                 }
             }
             this.setState({
@@ -426,10 +426,10 @@ class ChatInput extends Component {
     featureDropdown = (
         <div className="feature-dropdown">
             <Menu onClick={this.handleFeatureMenuClick}>
-                <MenuItem key="expression">发送表情包</MenuItem>
-                <MenuItem key="huaji">发送滑稽</MenuItem>
-                <MenuItem key="image">发送图片</MenuItem>
-                <MenuItem key="code">发送代码</MenuItem>
+                <MenuItem key="expression">send emoticon package</MenuItem>
+                <MenuItem key="huaji">send funny</MenuItem>
+                <MenuItem key="image">send pictures</MenuItem>
+                <MenuItem key="code">Send code</MenuItem>
             </Menu>
         </div>
     )
@@ -461,7 +461,7 @@ class ChatInput extends Component {
                     <form autoComplete="off" action="javascript:void(0);">
                         <input
                             type="text"
-                            placeholder="代码会写了吗, 给加薪了吗, 股票涨了吗, 来吐槽一下吧~~"
+                            placeholder="type something..."
                             maxLength="2048"
                             autofoucus="true"
                             ref={i => this.message = i}
@@ -475,25 +475,25 @@ class ChatInput extends Component {
                     <IconButton className="send" width={44} height={44} icon="send" iconSize={32} onClick={this.sendTextMessage} />
                     <Dialog
                         className="codeEditor-dialog"
-                        title="请输入要发送的代码"
+                        title="Please enter the code to send"
                         visible={codeInputVisible}
                         onClose={this.handleCodeEditorClose}
                     >
                         <div className="container">
                             <CodeEditor ref={i => this.codeEditor = i} />
-                            <button className="codeEditor-button" onClick={this.handleSendCode}>发送</button>
+                            <button className="codeEditor-button" onClick={this.handleSendCode}>send</button>
                         </div>
                     </Dialog>
                     <Dialog
                         className="expressionSearch-dialog"
-                        title="搜索表情包"
+                        title="Search emoticon package"
                         visible={expressionSearchVisible}
                         onClose={this.closeExpressionSearch}
                     >
                         <div className="container">
                             <div className="input-container">
                                 <Input ref={i => this.expressionSearchKeyword = i} onEnter={this.handleSearchExpressionInputEnter} />
-                                <Button onClick={this.handleSearchExpressionButtonClick}>搜索</Button>
+                                <Button onClick={this.handleSearchExpressionButtonClick}>search</Button>
                             </div>
                             <div className={`loading ${expressionSearchLoading ? 'show' : 'hide'}`}>
                                 <Loading type="spinningBubbles" color="#4A90E2" height={100} width={100} />
@@ -528,7 +528,7 @@ class ChatInput extends Component {
         }
         return (
             <div className="chat-chatInput guest">
-                <p>游客朋友你好, 请<b onClick={ChatInput.handleLogin}>登录</b>后参与聊天</p>
+                <p>Hello friends, please <b onClick={ChatInput.handleLogin}>login</b> to participate in the chat</p>
             </div>
         );
     }

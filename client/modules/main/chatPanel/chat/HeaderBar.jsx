@@ -9,7 +9,7 @@ import Message from '@/components/Message';
 
 class HeaderBar extends Component {
     static handleShareGroup() {
-        Message.success('已复制邀请信息到粘贴板, 去邀请其它人加群吧');
+        Message.success('The invitation information has been copied to the clipboard, and other people are invited to join the group.');
     }
     static propTypes = {
         linkmanType: PropTypes.string,

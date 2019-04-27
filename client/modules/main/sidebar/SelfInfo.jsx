@@ -57,7 +57,7 @@ class SelfInfo extends Component {
             return;
         }
         if (file.length > config.maxAvatarSize) {
-            return Message.error('设置头像失败, 请选择小于1MB的图片');
+            return Message.error('Failed to set avatar, please select less than 1MB image');
         }
 
         // gif头像不需要裁剪
@@ -86,12 +86,12 @@ class SelfInfo extends Component {
                 Message.error(changeAvatarErr);
             } else {
                 action.setAvatar(URL.createObjectURL(blob));
-                Message.success('修改头像成功');
+                Message.success('Modify avatar successfully');
                 this.setState({ cropper: false });
             }
         } catch (err) {
             console.error(err);
-            Message.error('上传头像失败');
+            Message.error('Uploading avatar failed');
         } finally {
             this.toggleAvatarLoading();
         }
@@ -111,7 +111,7 @@ class SelfInfo extends Component {
         });
         if (!err) {
             this.props.onClose();
-            SelfInfo.reLogin('修改密码成功, 请使用新密码重新登录');
+            SelfInfo.reLogin('The password was changed successfully. Please log in again with the new password.');
         }
     }
     /**
@@ -123,17 +123,17 @@ class SelfInfo extends Component {
         });
         if (!err) {
             this.props.onClose();
-            SelfInfo.reLogin('修改用户名成功, 请使用新用户名重新登录');
+            SelfInfo.reLogin('The user name was changed successfully. Please log in again with the new username.');
         }
     }
     render() {
         const { visible, onClose, avatar, primaryColor } = this.props;
         const { loading, cropper, cropperSrc } = this.state;
         return (
-            <Dialog className="dialog selfInfo" visible={visible} title="个人信息设置" onClose={onClose}>
+            <Dialog className="dialog selfInfo" visible={visible} title="Personal information settings" onClose={onClose}>
                 <div className="content">
                     <div>
-                        <p>修改头像</p>
+                        <p>Modify avatar</p>
                         <div className="avatar-preview">
                             {
                                 cropper ?
@@ -145,7 +145,7 @@ class SelfInfo extends Component {
                                             style={{ height: 460, width: 460 }}
                                             aspectRatio={1}
                                         />
-                                        <Button onClick={this.changeAvatar}>修改头像</Button>
+                                        <Button onClick={this.changeAvatar}>Modify avatar</Button>
                                         <ReactLoading className={`loading ${loading ? 'show' : 'hide'}`} type="spinningBubbles" color={`rgb(${primaryColor}`} height={120} width={120} />
                                     </div>
                                     :
@@ -157,18 +157,18 @@ class SelfInfo extends Component {
                         </div>
                     </div>
                     <div>
-                        <p>修改密码</p>
+                        <p>change password</p>
                         <div className="change-password">
-                            <Input ref={i => this.oldPassword = i} type="password" placeholder="旧密码" />
-                            <Input ref={i => this.newPassword = i} type="password" placeholder="新密码" />
-                            <Button onClick={this.changePassword}>修改密码</Button>
+                            <Input ref={i => this.oldPassword = i} type="password" placeholder="old password" />
+                            <Input ref={i => this.newPassword = i} type="password" placeholder="new password" />
+                            <Button onClick={this.changePassword}>change password</Button>
                         </div>
                     </div>
                     <div>
-                        <p>修改用户名</p>
+                        <p>modify username</p>
                         <div className="change-username">
-                            <Input ref={i => this.username = i} type="text" placeholder="用户名" />
-                            <Button onClick={this.changeUsername}>修改用户名</Button>
+                            <Input ref={i => this.username = i} type="text" placeholder="username" />
+                            <Button onClick={this.changeUsername}>modify username</Button>
                         </div>
                     </div>
                 </div>

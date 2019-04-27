@@ -13,28 +13,28 @@ const EachFetchMessagesCount = 30;
 module.exports = {
     async sendMessage(ctx) {
         const { to, type, content } = ctx.data;
-        assert(to, 'to不能为空');
+        assert(to, 'To cannot be empty');
 
         let groupId = '';
         let userId = '';
         if (isValid(to)) {
             groupId = to;
             const group = await Group.findOne({ _id: to });
-            assert(group, '群组不存在');
+            assert(group, 'Group does not exist');
         } else {
             userId = to.replace(ctx.socket.user, '');
-            assert(isValid(userId), '无效的用户ID');
+            assert(isValid(userId), 'Invalid user ID');
             const user = await User.findOne({ _id: userId });
-            assert(user, '用户不存在');
+            assert(user, 'User does not exist');
         }
 
         let messageContent = content;
         if (type === 'text') {
-            assert(messageContent.length <= 2048, '消息长度过长');
+            assert(messageContent.length <= 2048, 'Message length is too long');
             messageContent = xss(content);
         } else if (type === 'invite') {
             const group = await Group.findOne({ name: content });
-            assert(group, '目标群组不存在');
+            assert(group, 'Target group does not exist');
 
             const user = await User.findOne({ _id: ctx.socket.user });
             messageContent = JSON.stringify({
@@ -85,7 +85,7 @@ module.exports = {
     },
     async getLinkmansLastMessages(ctx) {
         const { linkmans } = ctx.data;
-        assert(Array.isArray(linkmans), '参数linkmans应该是Array');
+        assert(Array.isArray(linkmans), 'The parameter linkmans should be Array');
 
         const promises = linkmans.map(linkmanId =>
             Message

@@ -48,14 +48,14 @@ class GroupInfo extends Component {
                             </div>
                             <div className="info">
                                 <div>
-                                    <p>成员:</p>
-                                    <div>{groupInfo.members}人</div>
+                                    <p>member:</p>
+                                    <div>{groupInfo.members} member</div>
                                 </div>
                                 {
                                     hasLinkman ?
-                                        <Button onClick={this.handleFocusGroup}>发送消息</Button>
+                                        <Button onClick={this.handleFocusGroup}>Send a message</Button>
                                         :
-                                        <Button onClick={this.handleJoinGroup}>加入群组</Button>
+                                        <Button onClick={this.handleJoinGroup}>Join group</Button>
                                 }
                             </div>
                         </div>

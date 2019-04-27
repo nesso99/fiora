@@ -100,7 +100,7 @@ class Chat extends Component {
             return;
         }
         if (image.length > config.maxImageSize) {
-            return Message.error('设置群头像失败, 请选择小于1MB的图片');
+            return Message.error('Failed to set group avatar, please select less than 1MB image');
         }
 
         try {
@@ -108,11 +108,11 @@ class Chat extends Component {
             const [changeGroupAvatarError] = await fetch('changeGroupAvatar', { groupId: focus, avatar: imageUrl });
             if (!changeGroupAvatarError) {
                 action.setGroupAvatar(focus, URL.createObjectURL(image.result));
-                Message.success('修改群头像成功');
+                Message.success('Modify group avatar successfully');
             }
         } catch (err) {
             console.error(err);
-            Message.error('上传群头像失败');
+            Message.error('Uploading group avatar failed');
         }
     }
     leaveGroup = async () => {
@@ -121,7 +121,7 @@ class Chat extends Component {
         if (!err) {
             this.closeGroupInfo();
             action.removeLinkman(focus);
-            Message.success('退出群组成功');
+            Message.success('Exit the group successfully');
         }
     }
     /**
@@ -164,23 +164,23 @@ class Chat extends Component {
                 <MessageList showUserInfoDialog={this.showUserInfoDialog} />
                 <ChatInput members={members} />
                 <div className={`float-panel group-info ${groupInfoDialog ? 'show' : 'hide'}`}>
-                    <p>群组信息</p>
+                    <p>Group information</p>
                     <div>
                         {
                             !!userId && userId === creator ?
                                 <div className="avatar">
-                                    <p>群头像</p>
+                                    <p>Group avatar</p>
                                     <img src={avatar} onClick={this.changeGroupAvatar} />
                                 </div>
                                 :
                                 null
                         }
                         <div className="feature" style={{ display: !!userId && userId === creator ? 'none' : 'block' }}>
-                            <p>功能</p>
-                            <Button type="danger" onClick={this.leaveGroup}>退出群组</Button>
+                            <p>Features</p>
+                            <Button type="danger" onClick={this.leaveGroup}>Exit group</Button>
                         </div>
                         <div className="online-members">
-                            <p>在线成员 &nbsp;<span>{this.props.members.size}</span></p>
+                            <p>Online member &nbsp;<span>{this.props.members.size}</span></p>
                             <div>{this.renderMembers()}</div>
                         </div>
                     </div>

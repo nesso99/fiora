@@ -32,18 +32,19 @@ import './Sidebar.less';
  * 页面左边侧栏
  */
 @booleanStateDecorator({
-    settingDialog: false, // 设置
-    userDialog: false, // 个人信息设置
-    rewardDialog: false, // 打赏
-    infoDialog: false, // 关于
-    appDownloadDialog: false, // APP下载
-    adminDialog: false, // 管理员
+    settingDialog: false,
+    userDialog: false,
+    rewardDialog: false,
+    infoDialog: false,
+    appDownloadDialog: false,
+    adminDialog: false,
 })
+
 class Sidebar extends Component {
     static logout() {
         action.logout();
         window.localStorage.removeItem('token');
-        Message.success('您已经退出登录');
+        Message.success('You have logged out');
         socket.disconnect();
         socket.connect();
     }
@@ -55,12 +56,12 @@ class Sidebar extends Component {
         window.localStorage.removeItem('primaryColor');
         window.localStorage.removeItem('primaryTextColor');
         window.localStorage.removeItem('backgroundImage');
-        Message.success('已恢复默认主题');
+        Message.success('Restored default theme');
     }
     static resetSound() {
         action.setSound(config.sound);
         window.localStorage.removeItem('sound');
-        Message.success('已恢复默认提示音');
+        Message.success('Default tone has been restored');
     }
     static handleSelectSound(sound) {
         playSound(sound);
@@ -111,7 +112,7 @@ class Sidebar extends Component {
                 return;
             }
             if (image.length > config.maxBackgroundImageSize) {
-                return Message.error('设置背景图失败, 请选择小于3MB的图片');
+                return Message.error('Failed to set background image, please select less than 3MB image');
             }
             const { userId } = this.props;
             const imageUrl = await uploadFile(
@@ -144,10 +145,11 @@ class Sidebar extends Component {
                     <div className="buttons">
                         {
                             isAdmin ?
-                                Sidebar.renderTooltip('管理员', <IconButton width={40} height={40} icon="administrator" iconSize={28} onClick={this.toggleAdminDialog} />)
+                                Sidebar.renderTooltip('administrator', <IconButton width={40} height={40} icon="administrator" iconSize={28} onClick={this.toggleAdminDialog} />)
                                 :
                                 null
                         }
+                        {/*
                         <Tooltip placement="right" mouseEnterDelay={0.3} overlay={<span>源码</span>}>
                             <a href="https://github.com/yinxin630/fiora" target="_black" rel="noopener noreferrer">
                                 <IconButton width={40} height={40} icon="github" iconSize={26} />
@@ -155,33 +157,34 @@ class Sidebar extends Component {
                         </Tooltip>
                         {Sidebar.renderTooltip('下载APP', <IconButton width={40} height={40} icon="app" iconSize={28} onClick={this.toggleAppDownloadDialog} />)}
                         {Sidebar.renderTooltip('打赏', <IconButton width={40} height={40} icon="dashang" iconSize={26} onClick={this.toggleRewardDialog} />)}
-                        {Sidebar.renderTooltip('关于', <IconButton width={40} height={40} icon="about" iconSize={26} onClick={this.toggleInfoDialog} />)}
-                        {Sidebar.renderTooltip('设置', <IconButton width={40} height={40} icon="setting" iconSize={26} onClick={this.toggleSettingDialog} />)}
-                        {Sidebar.renderTooltip('退出登录', <IconButton width={40} height={40} icon="logout" iconSize={26} onClick={Sidebar.logout} />)}
+                        */}
+                        {Sidebar.renderTooltip('Infomation', <IconButton width={40} height={40} icon="about" iconSize={26} onClick={this.toggleInfoDialog} />)}
+                        {Sidebar.renderTooltip('Settings', <IconButton width={40} height={40} icon="setting" iconSize={26} onClick={this.toggleSettingDialog} />)}
+                        {Sidebar.renderTooltip('Sign Out', <IconButton width={40} height={40} icon="logout" iconSize={26} onClick={Sidebar.logout} />)}
                     </div>
-                    <Dialog className="dialog system-setting" visible={settingDialog} title="系统设置" onClose={this.toggleSettingDialog}>
+                    <Dialog className="dialog system-setting" visible={settingDialog} title="system settings" onClose={this.toggleSettingDialog}>
                         <div className="content">
                             <div>
-                                <p>恢复</p>
+                                <p>restore</p>
                                 <div className="buttons">
-                                    <Button onClick={Sidebar.resetThume}>恢复默认主题</Button>
-                                    <Button onClick={Sidebar.resetSound}>恢复默认提示音</Button>
+                                    <Button onClick={Sidebar.resetThume}>Restore default theme</Button>
+                                    <Button onClick={Sidebar.resetSound}>Restore default tone</Button>
                                 </div>
                             </div>
                             <div>
-                                <p>开关</p>
+                                <p>switch</p>
                                 <div className="switch">
-                                    <p>声音提醒</p>
+                                    <p>Sound reminder</p>
                                     <Switch
                                         onChange={action.setSoundSwitch}
                                         checked={soundSwitch}
                                     />
-                                    <p>桌面提醒</p>
+                                    <p>Desktop reminder</p>
                                     <Switch
                                         onChange={action.setNotificationSwitch}
                                         checked={notificationSwitch}
                                     />
-                                    <p>语音播报</p>
+                                    <p>Voice broadcast</p>
                                     <Switch
                                         onChange={action.setVoiceSwitch}
                                         checked={voiceSwitch}
@@ -189,27 +192,27 @@ class Sidebar extends Component {
                                 </div>
                             </div>
                             <div>
-                                <p>提示音</p>
+                                <p>Beep</p>
                                 <div className="sounds">
                                     <RadioGroup value={sound} onChange={Sidebar.handleSelectSound} horizontal>
-                                        <RadioButton value="default">默认</RadioButton>
-                                        <RadioButton value="apple">苹果</RadioButton>
-                                        <RadioButton value="pcqq">电脑QQ</RadioButton>
-                                        <RadioButton value="mobileqq">手机QQ</RadioButton>
-                                        <RadioButton value="momo">陌陌</RadioButton>
-                                        <RadioButton value="huaji">滑稽</RadioButton>
+                                        <RadioButton value="default">default</RadioButton>
+                                        <RadioButton value="apple">apple</RadioButton>
+                                        <RadioButton value="pcqq">Computer QQ</RadioButton>
+                                        <RadioButton value="mobileqq">Mobile QQ</RadioButton>
+                                        <RadioButton value="momo">Momo</RadioButton>
+                                        <RadioButton value="huaji">funny</RadioButton>
                                     </RadioGroup>
                                 </div>
                             </div>
                             <div>
-                                <p>背景图 <span className="background-tip">背景图会被拉伸到浏览器窗口大小, 合理的比例会取得更好的效果</span></p>
+                                <p>Background image <span className="background-tip">The background image will be stretched to the size of the browser window, and a reasonable ratio will achieve better results.</span></p>
                                 <div className="image-preview">
                                     <img className={backgroundLoading ? 'blur' : ''} src={backgroundImage} onClick={this.selectBackgroundImage} />
                                     <ReactLoading className={`loading ${backgroundLoading ? 'show' : 'hide'}`} type="spinningBubbles" color={`rgb(${primaryColor}`} height={100} width={100} />
                                 </div>
                             </div>
                             <div>
-                                <p>主题颜色</p>
+                                <p>Theme color</p>
                                 <div className="color-info">
                                     <div style={{ backgroundColor: `rgb(${primaryColor})` }} />
                                     <span>{`rgb(${primaryColor})`}</span>
@@ -217,7 +220,7 @@ class Sidebar extends Component {
                                 <TwitterPicker className="color-picker" color={`rgb(${primaryColor})`} onChange={this.handlePrimaryColorChange} />
                             </div>
                             <div>
-                                <p>文字颜色</p>
+                                <p>Text color</p>
                                 <div className="color-info">
                                     <div style={{ backgroundColor: `rgb(${primaryTextColor})` }} />
                                     <span>{`rgb(${primaryTextColor})`}</span>
@@ -227,44 +230,26 @@ class Sidebar extends Component {
                         </div>
                     </Dialog>
                     <SelfInfo visible={userDialog} onClose={this.toggleUserDialog} />
-                    <Dialog className="dialog reward " visible={rewardDialog} title="打赏" onClose={this.toggleRewardDialog}>
+                    <Dialog className="dialog reward " visible={rewardDialog} title="Reward" onClose={this.toggleRewardDialog}>
                         <div className="content">
-                            <p>如果你觉得这个聊天室代码对你有帮助, 希望打赏下给个鼓励~~<br />作者大多数时间在线, 欢迎提问, 有问必答</p>
+                            <p>If you think this chat room code is helpful to you, I hope to give an encouragement.~~<br />The author is online most of the time, welcome to ask questions, answer all questions</p>
                             <div>
                                 <img src={require('@/assets/images/alipay.jpg')} />
                                 <img src={require('@/assets/images/wxpay.jpg')} />
                             </div>
                         </div>
                     </Dialog>
-                    <Dialog className="dialog fiora-info " visible={infoDialog} title="关于" onClose={this.toggleInfoDialog}>
+                    <Dialog className="dialog fiora-info " visible={infoDialog} title="About" onClose={this.toggleInfoDialog}>
                         <div className="content">
                             <div>
-                                <p>作者主页</p>
-                                <a href="https://suisuijiang.com" target="_black" rel="noopener noreferrer">https://suisuijiang.com</a>
+                                <p>Forked from</p>
+                                <a href="https://github.com/yinxin630/fiora" target="_black" rel="noopener noreferrer">https://github.com/yinxin630/fiora</a>
                             </div>
                             <div>
-                                <p>如何运行</p>
-                                <a href="https://github.com/yinxin630/fiora/blob/master/doc/INSTALL.ZH.md" target="_black" rel="noopener noreferrer">https://github.com/yinxin630/fiora/blob/master/doc/INSTALL.ZH.md</a>
-                            </div>
-                            <div>
-                                <p>架构 / 设计思路</p>
-                                <a href="https://github.com/yinxin630/blog/issues/3" target="_black" rel="noopener noreferrer">https://github.com/yinxin630/blog/issues/3</a>
-                            </div>
-                            <div>
-                                <p>将fiora安装到主屏(PWA)</p>
+                                <p>Input box shortcut</p>
                                 <ul>
-                                    <li>地址栏输入: Chrome://flags</li>
-                                    <li>搜索并启用以下项目: Desktop PWAs(桌面PWAs)、App Banners(应用横幅)、Experimental App Banners(实验性应用横幅)</li>
-                                    <li>重启浏览器使修改的设置生效</li>
-                                    <li>点击地址栏最右边按钮</li>
-                                    <li>选择&quot;安装 fiora&quot;</li>
-                                </ul>
-                            </div>
-                            <div>
-                                <p>输入框快捷键</p>
-                                <ul>
-                                    <li>Alt + S: 发送滑稽</li>
-                                    <li>Alt + D: 发送表情包</li>
+                                    <li>Alt + S: Send funny</li>
+                                    <li>Alt + D: Send emoticon package</li>
                                 </ul>
                             </div>
                         </div>

@@ -40,7 +40,7 @@ class Expression extends Component {
                     renderTabBar={() => <ScrollableInkTabBar />}
                     renderTabContent={() => <TabContent />}
                 >
-                    <TabPane tab="默认表情" key="default">
+                    <TabPane tab="Default emoticon" key="default">
                         {this.renderDefaultExpression()}
                     </TabPane>
                 </Tabs>

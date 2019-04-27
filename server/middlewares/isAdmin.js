@@ -1,10 +1,10 @@
 const config = require('../../config/server');
 /**
- * 管理员功能控制器
+ * Administrator function controller
  */
 module.exports = function isAdmin() {
     /**
-     * 需要管理员权限的接口
+     * Interface that requires administrator privileges
      */
     const adminEvent = {
         sealUser: true,
@@ -16,7 +16,7 @@ module.exports = function isAdmin() {
             adminEvent[ctx.event]
                 && ctx.socket.user.toString() !== config.administrator
         ) {
-            ctx.res = '你不是管理员';
+            ctx.res = 'You are not an administrator';
             return;
         }
         await next();

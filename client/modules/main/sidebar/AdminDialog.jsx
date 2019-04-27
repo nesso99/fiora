@@ -25,9 +25,6 @@ class AdminDialog extends Component {
             this.getSealList();
         }
     }
-    /**
-     * 获取被封禁的用户列表
-     */
     getSealList = async () => {
         const [err, res] = await fetch('getSealList');
         if (!err) {
@@ -36,13 +33,10 @@ class AdminDialog extends Component {
             });
         }
     }
-    /**
-     * 处理重置用户密码操作
-     */
     handleResetPassword = async () => {
         const [err, res] = await fetch('resetUserPassword', { username: this.resetPasswordUsername.getValue() });
         if (!err) {
-            Message.success(`已将该用户的密码重置为:${res.newPassword}`);
+            Message.success(`The user’s password has been reset to:${res.newPassword}`);
         }
     }
     /**
@@ -51,31 +45,31 @@ class AdminDialog extends Component {
     handleSeal = async () => {
         const [err] = await fetch('sealUser', { username: this.sealUsername.getValue() });
         if (!err) {
-            Message.success('封禁用户成功');
+            Message.success('Blocking user success');
             this.getSealList();
         }
     }
     render() {
         const { visible, onClose } = this.props;
         return (
-            <Dialog className="dialog admin" visible={visible} title="管理员控制台" onClose={onClose}>
+            <Dialog className="dialog admin" visible={visible} title="Administrator console" onClose={onClose}>
                 <div className="content">
                     <div>
-                        <p>重置用户密码</p>
+                        <p>Reset user password</p>
                         <div className="reset-user-password">
-                            <Input ref={i => this.resetPasswordUsername = i} placeholder="要重置密码的用户名" />
-                            <Button onClick={this.handleResetPassword}>确定</Button>
+                            <Input ref={i => this.resetPasswordUsername = i} placeholder="Username to reset the password" />
+                            <Button onClick={this.handleResetPassword}>submit</Button>
                         </div>
                     </div>
                     <div>
-                        <p>封禁用户</p>
+                        <p>Ban user</p>
                         <div className="seal">
-                            <Input ref={i => this.sealUsername = i} placeholder="要封禁的用户名" />
-                            <Button onClick={this.handleSeal}>确定</Button>
+                            <Input ref={i => this.sealUsername = i} placeholder="User name to be banned" />
+                            <Button onClick={this.handleSeal}>submit</Button>
                         </div>
                     </div>
                     <div>
-                        <p>封禁用户列表</p>
+                        <p>Blocked user list</p>
                         <div className="seal-list">
                             {
                                 this.state.sealList.map(username => (

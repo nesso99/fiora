@@ -1,5 +1,5 @@
 /**
- * 增强context对象
+ * Enhance context object
  */
 module.exports = function () {
     return async (ctx, next) => {

@@ -37,7 +37,7 @@ class Login extends Component {
             if (typeof res === 'string') {
                 Message.error(res);
             } else {
-                Message.success('创建成功');
+                Message.success('Created successfully');
                 action.setUser(res);
                 action.closeLoginDialog();
                 window.localStorage.setItem('token', res.token);
@@ -47,22 +47,22 @@ class Login extends Component {
     renderLogin() {
         return (
             <div className="pane">
-                <h3>用户名</h3>
+                <h3>username</h3>
                 <Input ref={i => this.loginUsername = i} onEnter={this.handleLogin} />
-                <h3>密码</h3>
+                <h3>password</h3>
                 <Input type="password" ref={i => this.loginPassword = i} onEnter={this.handleLogin} />
-                <button onClick={this.handleLogin}>登录</button>
+                <button onClick={this.handleLogin}>login</button>
             </div>
         );
     }
     renderRegister() {
         return (
             <div className="pane">
-                <h3>用户名</h3>
-                <Input ref={i => this.registerUsername = i} onEnter={this.handleRegister} placeholder="用户名即昵称, 支持中文, 请慎重填写, 不可修改" />
-                <h3>密码</h3>
-                <Input type="password" ref={i => this.registerPassword = i} onEnter={this.handleRegister} placeholder="暂时也不支持修改密码" />
-                <button onClick={this.handleRegister}>注册</button>
+                <h3>username</h3>
+                <Input ref={i => this.registerUsername = i} onEnter={this.handleRegister} placeholder="User name is nickname, please fill in carefully, can not be modified" />
+                <h3>password</h3>
+                <Input type="password" ref={i => this.registerPassword = i} onEnter={this.handleRegister} placeholder="Temporarily no change to password" />
+                <button onClick={this.handleRegister}>register</button>
             </div>
         );
     }
@@ -74,10 +74,10 @@ class Login extends Component {
                 renderTabBar={() => <ScrollableInkTabBar />}
                 renderTabContent={() => <TabContent />}
             >
-                <TabPane tab="登录" key="login">
+                <TabPane tab="login" key="login">
                     {this.renderLogin()}
                 </TabPane>
-                <TabPane tab="注册" key="register">
+                <TabPane tab="register" key="register">
                     {this.renderRegister()}
                 </TabPane>
             </Tabs>

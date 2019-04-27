@@ -19,6 +19,7 @@ import UserInfo from '../UserInfo';
     userInfoDialog: false,
     createGroupDialog: false,
 })
+
 class Feature extends Component {
     constructor(...args) {
         super(...args);
@@ -83,7 +84,7 @@ class Feature extends Component {
                 action.addLinkman(res, true);
                 this.groupName.clear();
                 this.toggleCreateGroupDialog();
-                Message.success('创建群组成功');
+                Message.success('Create a group successfully');
             }
         });
     }
@@ -162,7 +163,7 @@ class Feature extends Component {
                     <Avatar size={40} src={groups[i].avatar} />
                     <div>
                         <p>{groups[i].name}</p>
-                        <p>{groups[i].members}人</p>
+                        <p>{groups[i].members} member</p>
                     </div>
                 </div>
             ));
@@ -183,15 +184,15 @@ class Feature extends Component {
         return (
             <div className="chatPanel-feature">
                 <form autoComplete="off" action="javascript:void(0);">
-                    <input className={showSearchResult ? 'focus' : 'blur'} type="text" placeholder="搜索群组/用户" ref={i => this.searchInput = i} onFocus={this.handleFocus} onKeyDown={this.handleInputKeyDown} />
+                    <input className={showSearchResult ? 'focus' : 'blur'} type="text" placeholder="Search group/user" ref={i => this.searchInput = i} onFocus={this.handleFocus} onKeyDown={this.handleInputKeyDown} />
                 </form>
                 <i className="iconfont icon-search" />
                 <IconButton style={{ display: showAddButton ? 'block' : 'none' }} width={40} height={40} icon="add" iconSize={38} onClick={this.toggleCreateGroupDialog} />
-                <Dialog className="create-group-dialog" title="创建群组" visible={createGroupDialog} onClose={this.toggleCreateGroupDialog}>
+                <Dialog className="create-group-dialog" title="create group" visible={createGroupDialog} onClose={this.toggleCreateGroupDialog}>
                     <div className="content">
-                        <h3>请输入群组名</h3>
+                        <h3>Please enter a group name</h3>
                         <Input ref={i => this.groupName = i} />
-                        <button onClick={this.handleCreateGroup}>创建</button>
+                        <button onClick={this.handleCreateGroup}>create</button>
                     </div>
                 </Dialog>
                 <Tabs
@@ -202,43 +203,43 @@ class Feature extends Component {
                     renderTabBar={() => <ScrollableInkTabBar />}
                     renderTabContent={() => <TabContent />}
                 >
-                    <TabPane tab="全部" key="all">
+                    <TabPane tab="All" key="all">
                         {
                             searchResult.users.length === 0 && searchResult.groups.length === 0 ?
-                                <p className="none">没有搜索到内容, 换个关键字试试吧~~</p>
+                                <p className="none">No content found, try another keyword~~</p>
                                 :
                                 (
                                     <div className="all-list">
                                         <div style={{ display: searchResult.users.length > 0 ? 'block' : 'none' }}>
-                                            <p>用户</p>
+                                            <p>user</p>
                                             <div className="user-list">{this.renderSearchUsers(3)}</div>
                                             <div className="more" style={{ display: searchResult.users.length > 3 ? 'block' : 'none' }}>
-                                                <span onClick={this.switchTabToUser}>查看更多</span>
+                                                <span onClick={this.switchTabToUser}>see more</span>
                                             </div>
                                         </div>
                                         <div style={{ display: searchResult.groups.length > 0 ? 'block' : 'none' }}>
-                                            <p>群组</p>
+                                            <p>group</p>
                                             <div className="group-list">{this.renderSearchGroups(3)}</div>
                                             <div className="more" style={{ display: searchResult.groups.length > 3 ? 'block' : 'none' }}>
-                                                <span onClick={this.switchTabToGroup}>查看更多</span>
+                                                <span onClick={this.switchTabToGroup}>see more</span>
                                             </div>
                                         </div>
                                     </div>
                                 )
                         }
                     </TabPane>
-                    <TabPane tab="用户" key="user">
+                    <TabPane tab="User" key="user">
                         {
                             searchResult.users.length === 0 ?
-                                <p className="none">没有搜索到内容, 换个关键字试试吧~~</p>
+                                <p className="none">No content found, try another keyword~~</p>
                                 :
                                 <div className="user-list only">{this.renderSearchUsers()}</div>
                         }
                     </TabPane>
-                    <TabPane tab="群组" key="group">
+                    <TabPane tab="Group" key="group">
                         {
                             searchResult.groups.length === 0 ?
-                                <p className="none">没有搜索到内容, 换个关键字试试吧~~</p>
+                                <p className="none">No content found, try another keyword~~</p>
                                 :
                                 <div className="group-list only">{this.renderSearchGroups()}</div>
                         }

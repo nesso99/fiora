@@ -1,7 +1,7 @@
 const assert = require('assert');
 
 /**
- * 全局异常捕获
+ * Global exception catch
  */
 module.exports = function () {
     return async (ctx, next) => {

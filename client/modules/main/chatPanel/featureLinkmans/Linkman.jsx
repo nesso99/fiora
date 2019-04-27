@@ -38,7 +38,7 @@ class Linkman extends Component {
             return Time.getHourMinute(messageTime);
         }
         if (Time.isYesterday(nowTime, messageTime)) {
-            return '昨天';
+            return 'yesterday';
         }
         return Time.getMonthDate(messageTime);
     }
